@@ -1,9 +1,9 @@
 function x = simplex(c, A, b)
 	m = size(A, 1); % rows of A
 	n = size(A, 2); % cols of A
-	assert(m == rank(A))
+	assert(m == rank(A));
 
-	% prepare for Phase II
+	% prepare for Phase I
 	A_start = [A, eye(m)];
 	x_start = [zeros(n, 1) ; b];
 	B_start = (n+1):(n+m);
@@ -13,7 +13,8 @@ function x = simplex(c, A, b)
 	[x_start, B] = simplex_bare(c_start, A_start, b, x_start, B_start);
 
 	% prepare for Phase II
-	assert(all(B<=n), 'Start corner is invalid')
+	assert(norm(c_start'*x_start) < 10e-5, 'Start corner is invalid: cost != 0');
+	assert(all(B<=n), 'Start corner is invalid: some B > n');
 	x = zeros(n, 1);
 	x(B) = x_start(B);
 
@@ -50,7 +51,7 @@ function [x, B] = simplex_bare(c, A, b, x, B)
 		gamma = dn_neg_idx(1);
 		gamma = N(gamma); % index mapping
 
-		ug = inv(A(:, B)) * A(:, gamma);
+		ug = A(:, B)\A(:, gamma);
 		if all(ug <= 0)
 			% CASE: all components of ug are <= 0
 			% we can increase some x(N) without restriction, and x>=0 constraint will never be violated
@@ -60,11 +61,10 @@ function [x, B] = simplex_bare(c, A, b, x, B)
 		% CASE: at least one component of ug > 0
 		% find lambda with: x_hat + lambda*vg = x_B - lambda*ug .= 0
 		% (i.e. lambda s.t. one component is 0, all others >= 0)
-		ratios = (inv(A(:, B)) * b) ./ ug;
+		ratios = (A(:, B)\b) ./ ug;
 
 		% disregard all non positive components in the following
-		ug_nonpos_idx = find(ug <= 0);
-		ratios(ug_nonpos_idx) = Inf;
+		ratios(ug <= 0) = Inf;
 
 		[lambda, r] = min(ratios);
 		r = B(r); % index mapping
@@ -78,13 +78,12 @@ function [x, B] = simplex_bare(c, A, b, x, B)
 		x = x + lambda * vg;
 
 		% sanity check
-		assert(abs(x(gamma) - lambda) <= 10e-8)
-		assert(abs(x(r)) <= 10e-8)
+		assert(norm(x(gamma) - lambda) <= 10e-8)
+		assert(norm(x(r)) <= 10e-8)
 
 		% swap elements r and gamma
 		assert(any(ismember(B,r)));
 		assert(~any(ismember(B,gamma)));
 		B(B==r) = gamma;
-		fprintf('Change of corner %d --> %d\n', r, gamma);
 	end
 end
