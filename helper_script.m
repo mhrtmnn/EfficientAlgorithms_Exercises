@@ -27,7 +27,7 @@ while 1
 
 	x_own_enum = corner_enumeration_solver(c, A, b);
 
-	if (norm(x_own - x_mat < 10e-8) && (norm(x_own_enum - x_mat) < 10e-8))
+	if (norm(x_own - x_mat) < 10e-8) && (norm(x_own_enum - x_mat) < 10e-8)
 		disp('================== Seems about right ==================');
 
 	else
