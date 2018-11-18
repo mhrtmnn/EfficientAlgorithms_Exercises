@@ -9,8 +9,9 @@ while 1
 	A_start = [A, eye(m)];
 	c_start = [zeros(n, 1); ones(m, 1)];
 
+	% Make sure the first and second Phase LP is solvable (linprog returns exitflag=0) before calling own implementation
 	[x_mat,fval,exitflag,output] = linprog(c_start, -eye(n+m), zeros(n+m,1), A_start, b);
-	if ~exitflag || norm(fval) > 0.1
+	if ~exitflag || norm(fval) > 0.1 % c^T*y should be 0 for a valid start corner
 		continue
 	end
 
