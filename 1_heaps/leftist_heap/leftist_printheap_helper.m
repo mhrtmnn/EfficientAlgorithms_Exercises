@@ -5,7 +5,7 @@ function G = leftist_printheap_helper(G, root)
 	assert(isprop(root, 'right'))
 
 	if ~isempty(root.left) && root.left.rank ~= 0
-		fprintf("Left  child of %d:\t%d\t(Rank=%d)\n", root.key, root.left.key, root.left.rank)
+		% fprintf("Left  child of %d:\t%d\t(Rank=%d)\n", root.key, root.left.key, root.left.rank)
 
 		G = addnode(G, num2str(root.left.key));
 		G = addedge(G, num2str(root.key), num2str(root.left.key));
@@ -18,7 +18,7 @@ function G = leftist_printheap_helper(G, root)
 		assert(root.left.parent == root);
 	end
 	if ~isempty(root.right) && root.right.rank ~= 0
-		fprintf("Right child of %d:\t%d \t(Rank=%d)\n", root.key, root.right.key, root.right.rank)
+		% fprintf("Right child of %d:\t%d \t(Rank=%d)\n", root.key, root.right.key, root.right.rank)
 
 		G = addnode(G, num2str(root.right.key));
 		G = addedge(G, num2str(root.key), num2str(root.right.key));

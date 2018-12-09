@@ -7,9 +7,9 @@ function leftist_printheap(root, p)
 	G = graph;
 	G = addnode(G, num2str(root.key));
 	
-	fprintf("--> Root:  %d (Rank=%d)\n", root.key, root.rank)
+	% fprintf("--> Root:  %d (Rank=%d)\n", root.key, root.rank)
 	G = leftist_printheap_helper(G, root);
 	
 	subplot(p(1), p(2), p(3));
-	plot(G);
+	plot(G, 'Layout', 'layered');
 end
