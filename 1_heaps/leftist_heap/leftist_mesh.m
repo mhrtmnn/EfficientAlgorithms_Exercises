@@ -3,9 +3,11 @@ function heap1 = leftist_mesh(heap1, heap2)
 	assert(isprop(heap1, 'rank'))
 	assert(isprop(heap1, 'left'))
 	assert(isprop(heap1, 'right'))
+	assert(isprop(heap1, 'parent'))
 	assert(isprop(heap2, 'rank'))
 	assert(isprop(heap2, 'left'))
 	assert(isprop(heap2, 'right'))
+	assert(isprop(heap2, 'parent'))
 
 	if heap1.key > heap2.key
 		% swap heap1 and heap2
@@ -16,8 +18,10 @@ function heap1 = leftist_mesh(heap1, heap2)
 
 	if isempty(heap1.right)
 		heap1.right = heap2;
+		heap2.parent = heap1;
 	else
 		heap1.right = leftist_mesh(heap1.right, heap2);
+		heap1.right.parent = heap1;
 	end
 
 	if isempty(heap1.left) || heap1.left.rank < heap1.right.rank

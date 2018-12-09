@@ -13,6 +13,9 @@ function G = leftist_printheap_helper(G, root)
 
 		% check heap property
 		assert(root.key <= root.left.key);
+		
+		% check parent pointer
+		assert(root.left.parent == root);
 	end
 	if ~isempty(root.right) && root.right.rank ~= 0
 		fprintf("Right child of %d:\t%d \t(Rank=%d)\n", root.key, root.right.key, root.right.rank)
@@ -26,5 +29,8 @@ function G = leftist_printheap_helper(G, root)
 
 		% check leftist heap property
 		assert(root.left.rank >= root.right.rank);
+
+		% check parent pointer
+		assert(root.right.parent == root);
 	end
 end

@@ -5,6 +5,7 @@ properties
 	key
 	left
 	right
+	parent
 end
 
 methods

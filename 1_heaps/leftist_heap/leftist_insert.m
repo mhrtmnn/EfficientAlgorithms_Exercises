@@ -9,6 +9,7 @@ function heap = leftist_insert(item, heap)
 
 	child.left  = [];
 	child.right = [];
+	child.parent = [];
 	child.rank  = 1;
 	child.key = item.key;
 
