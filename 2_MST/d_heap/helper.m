@@ -20,6 +20,13 @@ end
 
 H = plot(G, 'EdgeLabel',G.Edges.Weight, 'LineWidth', 5);
 title('Randomly generated graph with MST highlighted in red')
+
+% graph needs to be connected (one connected component)
+if sum(conncomp(G)) ~= height(G.Nodes)
+	error('Graph has more than one connected components')
+end
+
+% calc the MST
 blue = dheap_MST(G, startNode);
 
 MST_size = height(blue);
